@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
-
-  before_action :student_logged_in, only: [:select, :quit, :list]
+  include CoursesHelper
+  before_action :student_logged_in, only: [:select, :quit, :list, :scorecount]
   before_action :teacher_logged_in, only: [:new, :create, :edit, :destroy, :update, :open, :close]#add open by qiao
   before_action :logged_in, only: :index
 
@@ -59,15 +59,23 @@ class CoursesController < ApplicationController
 
   def list
     #-------QiaoCode--------
-    @courses = Course.where(:open=>true).paginate(page: params[:page], per_page: 4)
+    @courses = Course.where(:open=>true)
     @course = @courses-current_user.courses
-    tmp=[]
-    @course.each do |course|
-      if course.open==true
-        tmp<<course
-      end
+    @course_type = get_course_info(@course, 'course_type')
+    @course_time = get_course_info(@course, 'course_time')
+    #
+    if request.post?
+      res=[]
+      @course.each do |course|
+        if check_course_condition(course, 'course_time', params['course']['course_time'])and
+          check_course_condition(course, 'course_type', params['course']['course_type'])and
+          check_course_keyword(course,'name',params['keyword'])
+          res << course
+        end
+       end
+      @course = res
     end
-    @course=tmp
+    @course = @course.paginate(:page => params[:page], :per_page =>5)
   end
 
   def select
@@ -83,7 +91,31 @@ class CoursesController < ApplicationController
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
-
+  
+  # 统计学分
+  def scorecount
+    @course = current_user.courses
+    @grades = current_user.grades
+    
+    @public_required = ''
+    @course.each do |course|
+      if course.course_type == '公共必修课'
+        @public_required << course.name
+      end
+    end
+    
+    @get_public_required = ''
+    @grades.each do |grade|
+      if grade.course.course_type == '公共必修课'
+        @get_public_required << grade.course.name
+      end
+    end
+    
+    @course_credit = get_course_info(@course, 'credit')
+    @current_user_courses = current_user.courses
+    @user = current_user
+    @course_score_table = get_course_score_table(@course, @user)
+  end
 
   #-------------------------for both teachers and students----------------------
 

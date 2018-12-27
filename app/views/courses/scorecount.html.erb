@@ -1,0 +1,193 @@
+<div class="container-fluid">
+    <div class="row">
+        
+        <div class="col-sm-2">
+            <%= render "shared/sidenav" %>
+        </div>
+        
+        <div class="col-sm-10">
+            
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">学分统计</h3>
+                </div>
+                
+                <div class="panel-body" style="min-height:0px">
+                    
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead class="thead-dark">
+                            <td style="vertical-align:middle; text-align:center;"><b>类别</b></td>
+                            <td style="vertical-align:middle; text-align:center;"><b>公共必修课及学分</b></td>
+                            <td style="vertical-align:middle; text-align:center;"><b>公共选修课及学分</b></td>
+                            <td style="vertical-align:middle; text-align:center;"><b>专业学位课学分要求</b></td>
+                            <td style="vertical-align:middle; text-align:center;"><b>总学分要求</b></td>
+                        </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="vertical-align:middle; text-align:center;">学习要求</td>
+                                    <td>
+                                        <p>人文系列讲座（1学分）</br></p>
+                                        <p>中国特色社会主义理论与实践研究（1学分）</br></p>
+                                        <p>自然辩证法概论（1学分）</br></p>
+                                        <p>硕士学位英语（英语A）（3学分）</br></p>
+                                    </td>
+                                    
+                                    <td style="vertical-align:middle; text-align:center"><p>>=2学分</p></td>
+                                    <td style="vertical-align:middle; text-align:center"><p>>=12学分</p></td>
+                                    <td style="vertical-align:middle; text-align:center"><p>>=30学分</p></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="vertical-align:middle; text-align:center;">选课情况</td>
+                                    <td>
+                                        <p>
+                                            <% if !@public_required.include?'人文系列讲座' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <%end%>
+                                                人文系列讲座（1学分）</br>
+                                        </p>
+                                        
+                                        <p>
+                                            <% if !@public_required.include?'中国特色社会主义理论与实践研究' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <%end%>
+                                                中国特色社会主义理论与实践研究（1学分）</br>
+                                        </p>
+                                        
+                                        <p>
+                                            <% if !@public_required.include?'自然辩证法概论' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <%end%>
+                                                自然辩证法概论（1学分）</br>
+                                        </p>
+                                        
+                                        <p>
+                                            <% if !@public_required.include?'硕士学位英语（英语A）' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <%end%>
+                                                硕士学位英语（英语A）（3学分）</br>
+                                        </p>
+                                        
+                                    </td>
+                                    
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        <% if @course_score_table[0][0] < 2.0 %>
+                                            <font color='red'>
+                                        <% else %>
+                                            <font>
+                                        <% end %>
+                                            <%= @course_score_table[0][0] %>学分
+                                            </font>
+                                    </td>
+                                    
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        <% if @course_score_table[0][1] < 12.0 %>
+                                            <font color='red'>
+                                        <% else %>
+                                            <font>
+                                        <% end %>
+                                            <%= @course_score_table[0][1] %>学分
+                                            </font>
+                                    </td>
+                                    
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        <% if @course_score_table[0][2] < 30.0 %>
+                                            <font color='red'>
+                                        <% else %>
+                                            <font>
+                                        <% end %>
+                                            <%= @course_score_table[0][2] %>学分
+                                            </font>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="vertical-align:middle; text-align:center;">获取学分</td>
+                                    
+                                    <td>
+                                        <p>
+                                            <% if !@get_public_required.include?'人文系列讲座' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <% end %>
+                                                人文系列讲座（1学分）</br>
+                                        </p>
+                                        
+                                        <p>
+                                            <% if !@get_public_required.include?'中国特色社会主义理论与实践研究' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <% end %>
+                                                中国特色社会主义理论与实践研究（1学分）</br>
+                                        </p>
+                                        
+                                        <p>
+                                            <% if !@get_public_required.include?'自然辩证法概论' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <% end %>
+                                                自然辩证法概论（1学分）</br>
+                                        </p>
+                                        
+                                        <p>
+                                            <% if !@get_public_required.include?'硕士学位英语（英语A）' %>
+                                                <font color='red'>
+                                            <% else %>
+                                                <font>
+                                            <% end %>
+                                                硕士学位英语（英语A）（3学分）</br>
+                                        </p>
+                                        
+                                    </td>
+                                    
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        <% if @course_score_table[1][0] < 2.0 %>
+                                            <font color='red'>
+                                        <% else %>
+                                            <font>
+                                        <% end %>
+                                            <%= @course_score_table[1][0] %>学分
+                                            </font>
+                                    </td>
+                                    
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        <% if @course_score_table[1][1] < 12.0 %>
+                                            <font color='red'>
+                                        <% else %>
+                                            <font>
+                                        <% end %>
+                                            <%= @course_score_table[1][1] %>学分
+                                            </font>
+                                    </td>
+                                    
+                                    <td style="vertical-align:middle; text-align:center;">
+                                        <% if @course_score_table[1][2] < 30.0 %>
+                                            <font color='red'>
+                                        <% else %>
+                                            <font>
+                                        <% end %>
+                                            <%= @course_score_table[1][2] %>学分
+                                            </font>
+                                    </td>
+                                </tr>
+                                
+                                
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

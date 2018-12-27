@@ -48,6 +48,12 @@
               <% end %>
             </li>
         <% end %>
+        <li class="list-group-item">
+          <%= link_to scorecount_courses_url do %>
+          <span class="glyphicon glyphicon-chevron-right"></span> 学分统计
+          <span class="label label-info pull-right"><%= current_user.courses.count %></span>
+          <% end %>
+        </li>
 
       </ul>
     </div>
