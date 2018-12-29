@@ -56,17 +56,17 @@ module CoursesHelper
             # 课程学分按照类别进行分别计算
             if cur.course_type == '公共选修课'
                 score_table[0][0] += f_credit
-                if !is_end_course(cur, user)
+                if is_end_course(cur, user)
                     score_table[1][0] += f_credit
                     score_table[1][2] += f_credit
                 end
             elsif cur.course_type =='公共必修课'
-                if !is_end_course(cur, user)
+                if is_end_course(cur, user)
                     score_table[1][2] += f_credit
                 end
             elsif cur.course_type.include?'专业' or cur.course_type.include?'一级学科'
                 score_table[0][1] += f_credit
-                if !is_end_course(cur, user)
+                if is_end_course(cur, user)
                     score_table[1][1] += f_credit
                     score_table[1][2] += f_credit
                 end
@@ -80,8 +80,8 @@ module CoursesHelper
         @grades = course.grades
         @is_open = false
         @grades.each do |grade|
-            if grade.user.name ==user.name
-                @is_open == true
+            if grade.user.name ==user.name and grade.grade != nil and grade.grade != '' and grade.grade >= 60
+                @is_open = true
             end
         end
         return @is_open
