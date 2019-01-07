@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   include CoursesHelper
-  before_action :student_logged_in, only: [:select, :quit, :list, :scorecount]
+  before_action :student_logged_in, only: [:select, :quit, :list, :scorecount, :timetable]
   before_action :teacher_logged_in, only: [:new, :create, :edit, :destroy, :update, :open, :close]#add open by qiao
   before_action :logged_in, only: :index
 
@@ -91,6 +91,27 @@ class CoursesController < ApplicationController
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
+  
+  #------显示课表--把已选的课程传给课表  
+  def timetable  
+    @course = current_user.courses  
+    @grades = current_user.grades  
+      
+    rated_courses = []  
+    # 将已经打分的课程从课程表中去掉  
+    @grades.each do |grade|  
+      if grade.user.name == current_user.name and grade.grade != nil and grade.grade != '' and grade.grade > 0  
+        rated_courses << grade.course  
+      end  
+    end      
+    @course_credit = get_course_info(@course, 'credit')  
+    @current_user_course=current_user.courses  
+    @user=current_user  
+    # 去掉已经打分的课程  
+    @course = @course - rated_courses  
+    @course_time_table = get_current_curriculum_table(@course, @user)#当前课表  
+  end 
+  
   
   # 统计学分
   def scorecount
